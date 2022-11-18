@@ -1,0 +1,9 @@
+.vwpturnstile-wrap input {
+	visibility:hidden;
+	height:1px !important;
+	padding:0px !important;
+}
+
+.vwpturnstile-wrap .cf-turnstile{
+	margin-top:-20px;
+}
