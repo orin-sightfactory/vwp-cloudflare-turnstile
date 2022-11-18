@@ -21,6 +21,9 @@ License: GPLv2 or later
 Text Domain: vwpturnstile
  
 */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
 
 function vwp_turnstile_add_settings_link( $links ) {
     $settings_link = '<a href="options-general.php?page=vwp-turnstile">' . __( 'Settings' ) . '</a>';
