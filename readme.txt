@@ -1,7 +1,7 @@
 === VisualWP Cloudflare Turnstile ===
 Contributors: Sightfactory
 Tags: turnstile,anti-spam,captcha
-Requires at least: 5.9
+Requires at least: 5.8
 Tested up to: 6.1.1
 Requires PHP: 7.4
 Stable tag: 1.0.2
