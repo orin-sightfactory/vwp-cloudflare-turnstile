@@ -47,6 +47,7 @@ function vwptn_init_turnstile_scripts() {
 			wp_enqueue_script('vwptn-turnstile-js', plugins_url('/public/js/vwptn-turnstile.js' , __FILE__) , array('jquery','vwptn-turnstilejs-render'),'1.0.2');
 			wp_localize_script('vwptn-turnstile-js', 'vwpscripts', array(
 				'siteUrl' => get_site_url(),
+				'nonce' => wp_create_nonce('vwptn-ajax-nonce')
 			));
 			wp_enqueue_style('vwptn-turnstyle-css', plugins_url('/public/css/vwp-turnstile.css' , __FILE__), array(),'1.0.2');
 		}
@@ -104,8 +105,9 @@ add_action( 'login_enqueue_scripts', 'vwptn_init_turnstile_scripts' );
 add_action( 'init', 'vwptn_init_turnstile_scripts' );
 
 @$vwptn_turnstile_key_check = get_option('vwptn_turnstile_site_key');
-
-if(strlen($vwptn_turnstile_key_check) > 0) {
+@$vwptn_turnstile_status = get_option('vwptn_turnstile_status');
+	
+if($vwptn_turnstile_status == 1) {
 /*Login*/
 add_action( 'login_form', 'vwptn_init_turnstile_widget' );
 add_action('wp_authenticate_user','vwptn_init_turnstile_verification',10, 1);
@@ -133,10 +135,20 @@ add_action('lostpassword_post','vwptn_init_turnstile_verification', 10, 1);
 //TODO
 }
 /**/
-function vwptn_init_turnstile_widget() { 
+// this function is only to render a test version of the cloudflare widget for admin to test configuration
+function vwptn_init_turnstile_test_widget() { 
 	$vwptn_turnstile_site_key_value = get_option('vwptn_turnstile_site_key');
-	echo sprintf('<div class="cf-turnstile" data-sitekey="%s"></div><style>.cf-turnstile iframe { max-width:270px !important}</style>',esc_html($vwptn_turnstile_site_key_value));
+	if(isset($vwptn_turnstile_site_key_value) && strlen($vwptn_turnstile_site_key_value) >0) {
+		echo sprintf('<div class="cf-turnstile" data-sitekey="%s"></div><style>.cf-turnstile iframe { max-width:270px !important}</style>',esc_html($vwptn_turnstile_site_key_value));
+	}
+}
 
+function vwptn_init_turnstile_widget() { 
+	$vwptn_turnstile_status = get_option('vwptn_turnstile_status');
+	if($vwptn_turnstile_status == 1) {
+		$vwptn_turnstile_site_key_value = get_option('vwptn_turnstile_site_key');
+		echo sprintf('<div class="cf-turnstile" data-sitekey="%s"></div><style>.cf-turnstile iframe { max-width:270px !important}</style>',esc_html($vwptn_turnstile_site_key_value));
+	}
 }
 
 function vwptn_get_turnstile_response($data) {
@@ -327,16 +339,23 @@ function vwptn_turnstile_menu_options() {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
 	else {
-		if (isset($_POST['vwptn_turnstile_site_key']) && vwptn_current_user_has_role( 'administrator' ) )  {	
+		if (isset($_POST['vwptn_turnstile_site_key']) && vwptn_current_user_has_role( 'administrator' ) )  {
+					
 			check_admin_referer( 'vwptn_option_page_action' );
 			update_option('vwptn_turnstile_site_key', sanitize_text_field($_POST['vwptn_turnstile_site_key']));
 			update_option('vwptn_turnstile_secret_key', sanitize_text_field($_POST['vwptn_turnstile_secret_key']));
+			if(!isset($_POST['vwptn_turnstile_status'])){
+				$_POST['vwptn_turnstile_status'] = 0;
+			}
+			update_option('vwptn_turnstile_status', sanitize_text_field($_POST['vwptn_turnstile_status']));
 			$update_notice = 'Settings Updated';
 		} 
 		
 	
 		$vwptn_turnstile_site_key_value = get_option('vwptn_turnstile_site_key');
 		$vwptn_turnstile_secret_key_value = get_option('vwptn_turnstile_secret_key');
+		$vwptn_turnstile_status = get_option('vwptn_turnstile_status');
+		
 	?>
 	<div class="wrap">
 	
@@ -358,14 +377,22 @@ function vwptn_turnstile_menu_options() {
 		<div>
 		<label for="awesome_text"><p>Turnstile Site Key</p></label>
 		
-		<input type="password" name="vwptn_turnstile_site_key" id="turnstile_site_key" size="40" value="<?php echo esc_html(@$vwptn_turnstile_site_key_value); ?>">
+		<input type="password" name="vwptn_turnstile_site_key" id="turnstile_site_key" size="40" value="<?php echo esc_html(@$vwptn_turnstile_site_key_value); ?>"/>
 		</div>
 		<div>
 		 <label for="awesome_text"><p>Turnstile Secret Key</p></label>
-		<input type="password" name="vwptn_turnstile_secret_key" id="turnstile_secret_key" size="40" value="<?php echo esc_html(@$vwptn_turnstile_secret_key_value); ?>">
+		<input type="password" name="vwptn_turnstile_secret_key" id="turnstile_secret_key" size="40" value="<?php echo esc_html(@$vwptn_turnstile_secret_key_value); ?>"/>
 		</div>
-		<?php wp_nonce_field( 'vwptn_option_page_action' ); ?>
-		<p><input type="checkbox" value="1" name="vwptn_status" class="wppd-ui-toggle"> Enable Turnstile</p>
+		<?php wp_nonce_field( 'vwptn_option_page_action' ); 
+		
+		//echo $vwptn_turnstile_status;?>
+		<p><input type="checkbox" value="1" name="vwptn_turnstile_status" class="wppd-ui-toggle"
+		<?php 
+		if(isset($vwptn_turnstile_status) && $vwptn_turnstile_status == 1) { 
+			esc_html_e('checked');
+		}
+		?>/>
+		Enable Turnstile</p>
 		<br>
 		<input type="submit" value="Save Changes" class="button button-primary button-large">
 		
@@ -380,10 +407,12 @@ function vwptn_turnstile_menu_options() {
 			?>
 		
 		<form method="POST">
-		<?php vwptn_init_turnstile_widget(); ?>
+		<?php vwptn_init_turnstile_test_widget(); ?>
 		
-		<input type="submit" name="vwptn_turnstile_site_test_button" value="Test Website Configuration" class="button button-primary button-large">
+		
 		<?php wp_nonce_field( 'vwptn_option_page_action' ); ?>
+				<input type="submit" name="vwptn_turnstile_site_test_button" value="Test Website Configuration" class="button button-primary button-large"/>
+
 		<?php 
 		if($_POST && isset($_POST['vwptn_turnstile_site_test_button'])) {
 			check_admin_referer( 'vwptn_option_page_action' );
@@ -433,7 +462,14 @@ add_filter( 'script_loader_tag', 'vwptn_turnstile_defer_scripts', 10, 3 );
 add_action('wp_ajax_vwptn_turnstile_data_fetch' , 'vwptn_data_fetch');
 add_action('wp_ajax_nopriv_vwptn_turnstile_data_fetch','vwptn_data_fetch');
 function vwptn_data_fetch(){
-	esc_html_e(get_option('vwptn_turnstile_site_key'));
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'vwptn-ajax-nonce' ) ) {
+         wp_die('invalid request');
+     }
+	$vwptn_status = get_option('vwptn_turnstile_status');
+	$vwptn_sitekey = get_option('vwptn_turnstile_site_key');
+	$vwptn_settings = array('vwptnstatus'=>esc_html($vwptn_status),'sitekey'=>esc_html($vwptn_sitekey));
+	header('Content-Type: application/json; charset=utf-8');
+	echo json_encode($vwptn_settings);
 	wp_die();
 }
 
