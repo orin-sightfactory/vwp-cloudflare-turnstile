@@ -37,23 +37,23 @@ add_filter( "plugin_action_links_$plugin", 'vwptn_turnstile_add_settings_link' )
 function vwptn_init_turnstile_scripts() {
 	
 	if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {
-		wp_enqueue_script( 'vwptn-turnstilejs', 'https://challenges.cloudflare.com/turnstile/v0/api.js' , '1.0', true );
-		//wp_enqueue_script( 'vwptn-turnstilejs-render', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback' , '1.0', true );
+		wp_enqueue_script( 'vwptn-turnstilejs', 'https://challenges.cloudflare.com/turnstile/v0/api.js' , '1.0.2', true );
+		//wp_enqueue_script( 'vwptn-turnstilejs-render', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback' , '1.0.1', true );
 
 	}
 	else {
 		wp_enqueue_script( 'vwptn-turnstilejs-render', 'https://challenges.cloudflare.com/turnstile/v0/api.js' , '1.0', true );
 		if(!is_admin()) {
-			wp_enqueue_script('vwptn-turnstile-js', plugins_url('/public/js/vwptn-turnstile.js' , __FILE__) , array('jquery','vwptn-turnstilejs-render'),'1.2');
+			wp_enqueue_script('vwptn-turnstile-js', plugins_url('/public/js/vwptn-turnstile.js' , __FILE__) , array('jquery','vwptn-turnstilejs-render'),'1.0.2');
 			wp_localize_script('vwptn-turnstile-js', 'vwpscripts', array(
 				'siteUrl' => get_site_url(),
 			));
-			wp_enqueue_style('vwptn-turnstyle-css', plugins_url('/public/css/vwp-turnstile.css' , __FILE__), array(),'1.2');
+			wp_enqueue_style('vwptn-turnstyle-css', plugins_url('/public/css/vwp-turnstile.css' , __FILE__), array(),'1.0.2');
 		}
 		
 		
 		if(is_admin()) {
-			wp_enqueue_style('vwptn-turnstyle-admin-css', plugins_url('/admin/css/vwp.css' , __FILE__), array(),'1.2');
+			wp_enqueue_style('vwptn-turnstyle-admin-css', plugins_url('/admin/css/vwp.css' , __FILE__), array(),'1.0.2');
 		}
 		
 	}
@@ -365,6 +365,7 @@ function vwptn_turnstile_menu_options() {
 		<input type="password" name="vwptn_turnstile_secret_key" id="turnstile_secret_key" size="40" value="<?php echo esc_html(@$vwptn_turnstile_secret_key_value); ?>">
 		</div>
 		<?php wp_nonce_field( 'vwptn_option_page_action' ); ?>
+		<p><input type="checkbox" value="1" name="vwptn_status" class="wppd-ui-toggle"> Enable Turnstile</p>
 		<br>
 		<input type="submit" value="Save Changes" class="button button-primary button-large">
 		
