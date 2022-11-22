@@ -60,11 +60,10 @@ Also after saving your changes, but before logging out, try logging in using a d
 **If you are locked out and you have database access:**
 
 Execute the following SQL commands in your database:
-DELETE FROM wp_options WHERE option_name = 'vwptn_turnstile_site_key';
-DELETE FROM wp_options WHERE option_name = 'vwptn_turnstile_secret_key';
+DELETE FROM wp_options WHERE option_name = 'vwptn_turnstile_status';
 
 (Note, wp_options might have a different prefix in your installation depending on your preferred table prefix.)
 
 **If you are locked out and you have file or ftp access:**
-Browse to your plugins folder, normally in /wp-content/plugins and rename the vwp-cloudflare-turnstile folder to anything else such as vwp-cloudflare-turnstile_disable
+Browse to your plugins folder, normally in /wp-content/plugins and rename the vwp-cloudflare-turnstile folder to anything else such as vwp-cloudflare-turnstile_disabled
 Once you are logged in, if you would like to re-activate the plugin, rename the plugin back to its original name and activate it from the Plugins screen. Then you can go to the settings screen to remove, update or replace the non-working site key or secret key. Double check the settings in your Cloudflare dashboard to ensure you have added the correct site key and secret key for the correct domain.
