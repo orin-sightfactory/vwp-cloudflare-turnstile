@@ -36,7 +36,7 @@ Privacy Policy: [https://www.cloudflare.com/privacypolicy/](https://www.cloudfla
 7. Click on Save Changes to save your keys to the database
 8. Click on Test Website Configuration to ensure your website is communicating correctly with Cloudflare servers.
 9. Try logging into your website in a private window to test that you can login correctly.
-10. Once satisfied, toggle the Enable checkbox to enable Turnstile protection on your website
+10. Finally, toggle the 'Enable Turnstile' in the settings screen to activate Turnstile protection on your website
 
 == Changelog ==
 * 1.0.2 Added feature to test configuration
