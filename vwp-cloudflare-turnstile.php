@@ -361,7 +361,7 @@ function vwptn_turnstile_menu_options() {
 	
 	<div class="vwptn-plugin-header">
 	<a href="https://www.sightfactory.com/wordpress-plugins/visual-wp" target="_blank">
-	<img align="center" style="width:25px;margin-top:-5px" src="<?php echo plugins_url('/admin/images/vwp-logo.png' , __FILE__)?>"/> <span class="plugin-creator">VisualWP</span></a><?php esc_html_e($plugin_title) ?>
+	<img align="center" style="width:25px;margin-top:-5px" src="<?php echo plugins_url('/admin/images/vwp-logo.png' , __FILE__)?>"/> <span class="vwp-plugin-creator">VisualWP</span></a><?php esc_html_e($plugin_title) ?>
 	
 	
 	<img align="center" style="float:right;width:55px;margin-top:-15px" src="<?php echo plugins_url('/admin/images/vwp-turnstile-logo.gif' , __FILE__)?>"/>
@@ -386,7 +386,7 @@ function vwptn_turnstile_menu_options() {
 		<?php wp_nonce_field( 'vwptn_option_page_action' ); 
 		
 		//echo $vwptn_turnstile_status;?>
-		<p><input type="checkbox" value="1" name="vwptn_turnstile_status" class="wppd-ui-toggle"
+		<p><input type="checkbox" value="1" name="vwptn_turnstile_status" class="vwppd-ui-toggle"
 		<?php 
 		if(isset($vwptn_turnstile_status) && $vwptn_turnstile_status == 1) { 
 			esc_html_e('checked');
