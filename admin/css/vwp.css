@@ -5,10 +5,6 @@
 	
 }
 
-#wpbody-content .notice {
-    display: none;
-}
-
 .vwptn-loading {
     position: relative;
     top: 50%;
@@ -58,7 +54,7 @@
 	
 }
 
-.vwptn-plugin-header span.plugin-creator {
+.vwptn-plugin-header span.vwp-plugin-creator {
     margin-right: 10px;
     padding-right: 10px;
     border-right: 2px solid #999;
@@ -102,8 +98,9 @@ div#vwp-view-actions {
     grid-template-columns: 60% 40%;*/
 }
 
-#wpfooter {
+.settings_page_vwptn-turnstile #wpfooter {
 	display: none;
+	background:#FFF;
 }
 
 .vwptn-arrow {
@@ -356,12 +353,12 @@ input.vwptn-post-title:focus, input:focus {
     outline: transparent !important;
     border: none !important;
 }
-
+/*
 textarea#col-description {
     width: 100%;
     border: 1px solid #ddd;
 }
-
+*/
 .vwpvf-repeatable-set {
     padding: 10px 0;
 }
@@ -395,7 +392,7 @@ textarea#col-description {
 /**
  * Checkbox Toggle UI
  */
-input[type="checkbox"].wppd-ui-toggle {
+input[type="checkbox"].vwppd-ui-toggle {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -413,10 +410,10 @@ input[type="checkbox"].wppd-ui-toggle {
     background: none;
     box-shadow: none;
 }
-input[type="checkbox"].wppd-ui-toggle:focus {
+input[type="checkbox"].vwppd-ui-toggle:focus {
     box-shadow: none;
 }
-input[type="checkbox"].wppd-ui-toggle:after {
+input[type="checkbox"].vwppd-ui-toggle:after {
     content: '';
     font-size: 8px;
     font-weight: 400;
@@ -430,7 +427,7 @@ input[type="checkbox"].wppd-ui-toggle:after {
     border-radius: 72px;
     box-shadow: 0 0 12px rgb(0 0 0 / 15%) inset;
 }
-input[type="checkbox"].wppd-ui-toggle:before {
+input[type="checkbox"].vwppd-ui-toggle:before {
     content: '';
     width: 14px;
     height: 14px;
@@ -442,24 +439,24 @@ input[type="checkbox"].wppd-ui-toggle:before {
     border-radius: 50%;
     background-color: #ffffff;
 }
-input[type="checkbox"].wppd-ui-toggle:checked:before {
+input[type="checkbox"].vwppd-ui-toggle:checked:before {
     left: 20px;
     margin: 0;
     background-color: #ffffff;
 }
-input[type="checkbox"].wppd-ui-toggle,
-input[type="checkbox"].wppd-ui-toggle:before,
-input[type="checkbox"].wppd-ui-toggle:after,
-input[type="checkbox"].wppd-ui-toggle:checked:before,
-input[type="checkbox"].wppd-ui-toggle:checked:after {
+input[type="checkbox"].vwppd-ui-toggle,
+input[type="checkbox"].vwppd-ui-toggle:before,
+input[type="checkbox"].vwppd-ui-toggle:after,
+input[type="checkbox"].vwppd-ui-toggle:checked:before,
+input[type="checkbox"].vwppd-ui-toggle:checked:after {
     transition: ease .15s;
 }
-input[type="checkbox"].wppd-ui-toggle:checked:after {
+input[type="checkbox"].vwppd-ui-toggle:checked:after {
     content: 'ON';
     background-color: #2271b1;
 }
 
-
+/*
 .nav-tab {
     border-bottom: 0px solid #f0f0f1;
     background: linear-gradient(#FDFDFD, #F0F0F0) !important;
@@ -476,3 +473,4 @@ input[type="checkbox"].wppd-ui-toggle:checked:after {
 .nav-tab-wrapper  {
     background: #195faa !important;
 }
+*/
