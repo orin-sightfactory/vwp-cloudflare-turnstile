@@ -258,8 +258,10 @@ if ( in_array( 'ninja-forms/ninja-forms.php', apply_filters( 'active_plugins', g
 		return esc_html($default_value);
 	}
 
-
-	add_filter( 'ninja_forms_submit_data', 'vwptn_ninja_forms_submit_data' );
+	$vwptn_turnstile_status = get_option('vwptn_turnstile_status');
+	if($vwptn_turnstile_status == 1) {
+		add_filter( 'ninja_forms_submit_data', 'vwptn_ninja_forms_submit_data' );
+	}
 
 	function vwptn_ninja_forms_submit_data( $form_data ) {
  
